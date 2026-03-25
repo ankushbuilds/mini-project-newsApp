@@ -22,14 +22,16 @@ export class News extends Component {
       totalResults: 0
     }
   }
+  // 73881df8dd3703f2f3cbdce587f0ca9e
+
 
   async componentDidMount(){ 
     this.fetchNews(this.state.page);
   }
-
   fetchNews = async(pageNumber) => {
     this.setState({loading: true});
-    let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&apiKey=048d21c7c8ef41689023ea3bf94e774e&page=${pageNumber}&pageSize=${this.props.pageSize}`;
+    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&apikey=73881df8dd3703f2f3cbdce587f0ca9e&page=${pageNumber}&pageSize=${this.props.pageSize}`;
+ 
     try {
       let data = await fetch(url);
       let parsedData = await data.json();
