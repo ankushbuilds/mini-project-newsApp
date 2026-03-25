@@ -5,11 +5,11 @@ import PropTypes from 'prop-types'
 
 export class News extends Component {
   static defaultProps = {
-    pageSize: 9
+    max: 9
   }
 
   static propTypes = {
-    pageSize: PropTypes.number,
+    max: PropTypes.number,
     category: PropTypes.string
   }
 
@@ -19,7 +19,7 @@ export class News extends Component {
       articles: [],      // 👈 always start with empty array
       loading : false,
       page: 1,
-      totalResults: 0
+      totalArticles: 0
     }
   }
   // 73881df8dd3703f2f3cbdce587f0ca9e
@@ -28,9 +28,9 @@ export class News extends Component {
   async componentDidMount(){ 
     this.fetchNews(this.state.page);
   }
-  fetchNews = async(pageNumber) => {
+  fetchNews = async(page) => {
     this.setState({loading: true});
-    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&apikey=73881df8dd3703f2f3cbdce587f0ca9e&page=${pageNumber}&pageSize=${this.props.pageSize}`;
+    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=in&apikey=73881df8dd3703f2f3cbdce587f0ca9e&page=${page}&max=${this.props.max}`;
  
     try {
       let data = await fetch(url);
@@ -38,9 +38,9 @@ export class News extends Component {
       // 👇 fallback if API fails
       this.setState({
         articles: parsedData.articles || [],
-        totalResults: parsedData.totalResults || 0,
+        totalArticles: parsedData.totalArticles || 0,
         loading: false,
-        page: pageNumber
+        page: page
       });
     } catch (error) {
       console.error("Failed to fetch news:", error);
@@ -56,7 +56,7 @@ export class News extends Component {
   }
 
   handleNextClick = () => {
-    if(this.state.page + 1 <= Math.ceil(this.state.totalResults / this.props.pageSize)){
+    if(this.state.page + 1 <= Math.ceil(this.state.totalArticles / this.props.max)){
       this.fetchNews(this.state.page + 1);
     }
   }
@@ -74,7 +74,7 @@ export class News extends Component {
                 <NewsItem
                   title={element.title}
                   description={element.description ? element.description.slice(0, 80) : ""}
-                  ImageUrl={element.urlToImage}
+                  ImageUrl={element.image}
                   newsUrl={element.url}
                 />
               </div>
@@ -86,7 +86,7 @@ export class News extends Component {
 
         <div className="container d-flex justify-content-between">
           <button disabled={this.state.page <= 1} type="button" className="btn btn-dark" onClick={this.handleBackClick}>&larr; Back</button>
-          <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} type="button" className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button>
+          <button disabled={this.state.page + 1 > Math.ceil(this.state.totalArticles / this.props.max)} type="button" className="btn btn-dark" onClick={this.handleNextClick}>Next &rarr;</button>
         </div>
       </div>
     )
