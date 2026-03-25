@@ -1,8 +1,3 @@
-// React class based component example   ---> #rcc
-// This --> this is used to access the properties and methods of the class component.
-//  It refers to the current instance of the class component.
-//  In a class component, you can define properties and methods, and you can access them using this keyword.
-//  For example, if you have a property called name, you can access it using this.name. Similarly, if you have a method called handleClick, you can call it using this.handleClick().
 
 import './App.css';
 import React, { Component } from 'react';

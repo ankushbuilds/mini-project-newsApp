@@ -16,13 +16,13 @@ export class News extends Component {
   constructor(){  
     super();
     this.state = {
-      articles: [],      // 👈 always start with empty array
+      articles: [],     
       loading : false,
       page: 1,
       totalArticles: 0
     }
   }
-  // 73881df8dd3703f2f3cbdce587f0ca9e
+ 
 
 
   async componentDidMount(){ 
