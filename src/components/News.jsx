@@ -12,15 +12,19 @@ export class News extends Component {
     max: PropTypes.number,
     category: PropTypes.string
   }
+  capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
-  constructor(){  
-    super();
+  constructor(props){  
+    super(props);
     this.state = {
       articles: [],     
       loading : false,
       page: 1,
       totalArticles: 0
     }
+    document.title =`${this.capitalizeFirstLetter(this.props.category)} - The Wire`;
   }
  
 
@@ -35,7 +39,7 @@ export class News extends Component {
     try {
       let data = await fetch(url);
       let parsedData = await data.json();
-      // 👇 fallback if API fails
+    
       this.setState({
         articles: parsedData.articles || [],
         totalArticles: parsedData.totalArticles || 0,
@@ -64,7 +68,7 @@ export class News extends Component {
   render() {
     return (
       <div className='container my-3'>
-        <h1 className="text-center" style={{margin: '30px 0px'}}>Latest News</h1>
+        <h1 className="text-center" style={{margin: '30px 0px'}}>TheWire - {this.capitalizeFirstLetter(this.props.category)} </h1>
         {this.state.loading && <Spinner/>}
 
         <div className="row">
@@ -76,11 +80,13 @@ export class News extends Component {
                   description={element.description ? element.description.slice(0, 80) : ""}
                   ImageUrl={element.image}
                   newsUrl={element.url}
+                  publishedAt={element.publishedAt}
+                  source={element.source.name}
                 />
               </div>
             ))
           ) : (
-            !this.state.loading && <p className="text-center">No news available</p>
+            !this.state.loading && <p className="text-center">Breaking news: The news is missing! Stay tuned… </p>
           )}
         </div>
 
