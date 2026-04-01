@@ -32,28 +32,29 @@ export class News extends Component {
   async componentDidMount(){ 
     this.fetchNews(this.state.page);
   }
-  fetchNews = async(page) => {
-    this.setState({loading: true});
-    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=in&apikey=73881df8dd3703f2f3cbdce587f0ca9e&page=${page}&max=${this.props.max}`;
- 
-    try {
-      let data = await fetch(url);
-      let parsedData = await data.json();
-    
-      this.setState({
-        articles: parsedData.articles || [],
-        totalArticles: parsedData.totalArticles || 0,
-        loading: false,
-        page: page
-      });
-    } catch (error) {
-      console.error("Failed to fetch news:", error);
-      this.setState({
-        articles: [],
-        loading: false
-      });
-    }
+ fetchNews = async (page) => {
+  this.setState({ loading: true });
+
+  let url = `https://my-news-backend.onrender.com/news?category=${this.props.category}&page=${page}&max=${this.props.max}`;
+
+  try {
+    let data = await fetch(url);
+    let parsedData = await data.json();
+
+    this.setState({
+      articles: parsedData.articles || [],
+      totalArticles: parsedData.totalArticles || 0,
+      loading: false,
+      page: page
+    });
+  } catch (error) {
+    console.error("Failed to fetch news:", error);
+    this.setState({
+      articles: [],
+      loading: false
+    });
   }
+};
 
   handleBackClick = () => {
     this.fetchNews(this.state.page - 1);
