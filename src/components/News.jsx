@@ -28,14 +28,14 @@ export class News extends Component {
   }
  
 
-
   async componentDidMount(){ 
     this.fetchNews(this.state.page);
   }
  fetchNews = async (page) => {
   this.setState({ loading: true });
 
-  let url = `https://my-news-backend.onrender.com/news?category=${this.props.category}&page=${page}&max=${this.props.max}`;
+  const apiUrl = import.meta.env.VITE_API_URL || '/api/news';
+  let url = `${apiUrl}?category=${this.props.category}&max=${this.props.max}&page=${page}`;
 
   try {
     let data = await fetch(url);
